@@ -1,6 +1,31 @@
 package com.example.geektrust.constants;
 
-public interface Constants {
+import java.util.HashMap;
+import java.util.Map;
+
+public class Constants {
+
+    public static Map<String, Integer> limitOfVehiclesAllowed = new HashMap<>();
+    public static Map<String, Integer> costOfVehiclesTypesPerHour = new HashMap<>();
+
+    static {
+
+        limitOfVehiclesAllowed.put("BIKE_R", 4);
+        limitOfVehiclesAllowed.put("CAR_R", 2);
+        limitOfVehiclesAllowed.put("CAR_V", 1);
+        limitOfVehiclesAllowed.put("SUV_R", 2);
+        limitOfVehiclesAllowed.put("SUV_V", 1);
+        limitOfVehiclesAllowed.put("BIKE_R", 4);
+    }
+
+    static {
+
+        costOfVehiclesTypesPerHour.put("BIKE_R", 60);
+        costOfVehiclesTypesPerHour.put("CAR_R", 120);
+        costOfVehiclesTypesPerHour.put("CAR_V", 250);
+        costOfVehiclesTypesPerHour.put("SUV_R", 200);
+        costOfVehiclesTypesPerHour.put("SUV_V", 300);
+    }
 
     public static final String BIKE = "BIKE";
     public static final String CAR = "CAR";
@@ -14,20 +39,16 @@ public interface Constants {
     public static final String ADDITIONAL = "ADDITIONAL";
 
     public static final String SUCCESS = "SUCCESS";
+    public static final String FAILURE = "FAILURE";
     public static final String INVALID_ENTRY_TIME = "INVALID_ENTRY_TIME";
     public static final String INVALID_EXIT_TIME = "INVALID_EXIT_TIME";
     public static final String RACETRACK_FULL = "RACETRACK_FULL";
 
-    public static final Integer BIKE_R = 4;
-    public static final Integer CAR_R = 2;
-    public static final Integer CAR_V = 1;
-    public static final Integer SUV_R = 2;
-    public static final Integer SUV_V = 1;
+    public static final String ENTRY_TIME_START_STRING = "13:00";
+    public static final String ENTRY_TIME_END_STRING = "17:00";
+    public static final Integer ENTRY_TIME_START_INTEGER = 780;
+    public static final Integer ENTRY_TIME_END_INTEGER = 1020;
+    public static final Integer EXIT_TIME_END_INTEGER = 1200;
 
-    public static final Integer BIKE_R_COST = 60;
-    public static final Integer CAR_R_COST = 120;
-    public static final Integer CAR_V_COST = 250;
-    public static final Integer SUV_R_COST = 200;
-    public static final Integer SUV_V_COST = 300;
-
+    public static final Integer durationOfBooking = 3;
 }
