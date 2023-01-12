@@ -23,8 +23,8 @@ public class Utility {
         int hour = Integer.parseInt(hourMin[0]);
         int mins = Integer.parseInt(hourMin[1]);
         hour = hour + hoursDuration;
-        String hourString = (hour + "").length() == 1 ? "0" + hour : hour + "";
-        String minString = (mins + "").length() == 1 ? "0" + mins : mins + "";
+        String hourString = (hour + Constants.EMPTY).length() == Constants.ONE ? Constants.ZERO_STRING + hour : hour + Constants.EMPTY;
+        String minString = (mins + Constants.EMPTY).length() == Constants.ONE ? Constants.ZERO_STRING + mins : mins + Constants.EMPTY;
         return hourString + Constants.COLON + minString;
     }
 
@@ -39,19 +39,19 @@ public class Utility {
             mins = mins - Constants.minutesInHour;
             hour++;
         }
-        String hourString = (hour + "").length() == 1 ? "0" + hour : hour + "";
-        String minString = (mins + "").length() == 1 ? "0" + mins : mins + "";
+        String hourString = (hour + Constants.EMPTY).length() == Constants.ONE ? Constants.ZERO_STRING + hour : hour + Constants.EMPTY;
+        String minString = (mins + Constants.EMPTY).length() == Constants.ONE ? Constants.ZERO_STRING + mins : mins + Constants.EMPTY;
         return hourString + Constants.COLON + minString;
     }
 
     public static String regularVehicleKey(String vehicle_type){
 
-        return vehicle_type.toUpperCase() + "_" + Constants.R;
+        return vehicle_type.toUpperCase() + Constants.UNDERSCORE + Constants.R;
     }
 
     public static String vipVehicleKey(String vehicle_type){
 
-        return vehicle_type.toUpperCase() + "_" + Constants.V;
+        return vehicle_type.toUpperCase() + Constants.UNDERSCORE + Constants.V;
     }
 
 }

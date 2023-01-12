@@ -29,8 +29,8 @@ public class BookingControllerTest {
         List<TimeSlot> timeSlots = new ArrayList<>();
         timeSlots.add(new TimeSlot("13:00", "16:00"));
         timeSlots.add(new TimeSlot("13:05", "16:05"));
-        structure.allTimeSlots.put("SUV_R", timeSlots);
-        structure.allTimeSlots.put("SUV_V", timeSlots);
+        structure.getAllTimeSlots().put("SUV_R", timeSlots);
+        structure.getAllTimeSlots().put("SUV_V", timeSlots);
 
         String returnValue = BookingController.bookNormalSlots(structure, "", "SUV", "17:00");
 
@@ -46,8 +46,8 @@ public class BookingControllerTest {
         List<TimeSlot> timeSlots = new ArrayList<>();
         timeSlots.add(new TimeSlot("13:00", "16:00"));
         timeSlots.add(new TimeSlot("15:05", "18:05"));
-        structure.allTimeSlots.put("SUV_R", timeSlots);
-        structure.allTimeSlots.put("SUV_V", timeSlots);
+        structure.getAllTimeSlots().put("SUV_R", timeSlots);
+        structure.getAllTimeSlots().put("SUV_V", timeSlots);
 
         String returnValue = BookingController.bookNormalSlots(structure, "", "SUV", "17:00");
 
@@ -63,8 +63,8 @@ public class BookingControllerTest {
         List<TimeSlot> timeSlots = new ArrayList<>();
         timeSlots.add(new TimeSlot("13:00", "16:00"));
         timeSlots.add(new TimeSlot("13:05", "16:05"));
-        structure.allTimeSlots.put("SUV_R", timeSlots);
-        structure.allTimeSlots.put("SUV_V", timeSlots);
+        structure.getAllTimeSlots().put("SUV_R", timeSlots);
+        structure.getAllTimeSlots().put("SUV_V", timeSlots);
 
         String returnValue = BookingController.bookNormalSlots(structure, "", "SUV", "13:00");
 
@@ -76,8 +76,8 @@ public class BookingControllerTest {
     public void bookAdditionalSlots_return_INVALID_EXIT_TIME(){
 
         Structure structure = new Structure();
-        structure.vehicles_id_type_map.put("abc", "SUV");
-        structure.vehicles_slot_map.put("abc", new TimeSlot("13:00", "16:00"));
+        structure.getVehicles_id_type_map().put("abc", "SUV");
+        structure.getVehicles_slot_map().put("abc", new TimeSlot("13:00", "16:00"));
         String returnValue = BookingController.bookAdditionalSlots(structure, "abc", "20:01");
 
         assert returnValue.equals(Constants.INVALID_EXIT_TIME);
@@ -88,8 +88,8 @@ public class BookingControllerTest {
     public void bookAdditionalSlots_return_INVALID_EXIT_TIME1(){
 
         Structure structure = new Structure();
-        structure.vehicles_id_type_map.put("abc", "SUV");
-        structure.vehicles_slot_map.put("abc", new TimeSlot("13:00", "16:00"));
+        structure.getVehicles_id_type_map().put("abc", "SUV");
+        structure.getVehicles_slot_map().put("abc", new TimeSlot("13:00", "16:00"));
         String returnValue = BookingController.bookAdditionalSlots(structure, "abc", "12:01");
 
         assert returnValue.equals(Constants.INVALID_EXIT_TIME);
@@ -100,14 +100,14 @@ public class BookingControllerTest {
     public void bookAdditionalSlots_return_SUCCESS(){
 
         Structure structure = new Structure();
-        structure.vehicles_id_type_map.put("abc", "SUV");
-        structure.vehicles_slot_map.put("abc", new TimeSlot("13:00", "16:00"));
+        structure.getVehicles_id_type_map().put("abc", "SUV");
+        structure.getVehicles_slot_map().put("abc", new TimeSlot("13:00", "16:00"));
 
         List<TimeSlot> timeSlots = new ArrayList<>();
         timeSlots.add(new TimeSlot("13:00", "16:00"));
         timeSlots.add(new TimeSlot("13:05", "16:05"));
-        structure.allTimeSlots.put("SUV_R", timeSlots);
-        structure.allTimeSlots.put("SUV_V", timeSlots);
+        structure.getAllTimeSlots().put("SUV_R", timeSlots);
+        structure.getAllTimeSlots().put("SUV_V", timeSlots);
 
         String returnValue = BookingController.bookAdditionalSlots(structure, "abc", "16:15");
 
@@ -119,14 +119,14 @@ public class BookingControllerTest {
     public void bookAdditionalSlots_return_SUCCESS1(){
 
         Structure structure = new Structure();
-        structure.vehicles_id_type_map.put("abc", "SUV");
-        structure.vehicles_slot_map.put("abc", new TimeSlot("13:00", "16:00"));
+        structure.getVehicles_id_type_map().put("abc", "SUV");
+        structure.getVehicles_slot_map().put("abc", new TimeSlot("13:00", "16:00"));
 
         List<TimeSlot> timeSlots = new ArrayList<>();
         timeSlots.add(new TimeSlot("13:00", "16:00"));
         timeSlots.add(new TimeSlot("16:05", "19:05"));
-        structure.allTimeSlots.put("SUV_R", timeSlots);
-        structure.allTimeSlots.put("SUV_V", timeSlots);
+        structure.getAllTimeSlots().put("SUV_R", timeSlots);
+        structure.getAllTimeSlots().put("SUV_V", timeSlots);
 
         String returnValue = BookingController.bookAdditionalSlots(structure, "abc", "16:15");
 
@@ -138,15 +138,15 @@ public class BookingControllerTest {
     public void bookAdditionalSlots_return_RACETRACK_FULL(){
 
         Structure structure = new Structure();
-        structure.vehicles_id_type_map.put("abc", "SUV");
-        structure.vehicles_slot_map.put("abc", new TimeSlot("13:00", "16:00"));
+        structure.getVehicles_id_type_map().put("abc", "SUV");
+        structure.getVehicles_slot_map().put("abc", new TimeSlot("13:00", "16:00"));
 
         List<TimeSlot> timeSlots = new ArrayList<>();
         timeSlots.add(new TimeSlot("13:00", "16:00"));
         timeSlots.add(new TimeSlot("16:05", "19:05"));
         timeSlots.add(new TimeSlot("16:06", "19:06"));
-        structure.allTimeSlots.put("SUV_R", timeSlots);
-        structure.allTimeSlots.put("SUV_V", timeSlots);
+        structure.getAllTimeSlots().put("SUV_R", timeSlots);
+        structure.getAllTimeSlots().put("SUV_V", timeSlots);
 
         String returnValue = BookingController.bookAdditionalSlots(structure, "abc", "16:15");
 

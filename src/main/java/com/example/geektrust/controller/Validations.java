@@ -23,7 +23,7 @@ public class Validations {
         String key = vehicleBookingRequest.isRegularORVIP() ? Utility.regularVehicleKey(vehicleBookingRequest.getVehicle_type())
                 : Utility.vipVehicleKey(vehicleBookingRequest.getVehicle_type());
         int limitBookingsConflicts = Constants.limitOfVehiclesAllowed.get(key);
-        List<TimeSlot> timeSlots = structure.allTimeSlots.get(key) == null ? new ArrayList<>() : structure.allTimeSlots.get(key);
+        List<TimeSlot> timeSlots = structure.getAllTimeSlots().get(key) == null ? new ArrayList<>() : structure.getAllTimeSlots().get(key);
 
         for (TimeSlot timeSlot : timeSlots){
             if ((vehicleBookingRequest.getRequestedBookingSlot().getFromInteger() >= timeSlot.getFromInteger()

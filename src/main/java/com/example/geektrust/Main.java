@@ -1,5 +1,6 @@
 package com.example.geektrust;
 
+import com.example.geektrust.constants.Constants;
 import com.example.geektrust.inputOutput.InputOutput;
 import com.example.geektrust.model.Structure;
 
@@ -11,7 +12,6 @@ public class Main {
     public static void main(String[] args) {
 
         Structure structure = new Structure();
-        String space = " ";
 
         try {
 
@@ -21,7 +21,7 @@ public class Main {
             while (scanner.hasNextLine()) {
 
                 String currentLine = scanner.nextLine();
-                String[] splits = currentLine.split(space);
+                String[] splits = currentLine.split(Constants.SPACE);
                 System.out.println(InputOutput.receiveAndForwardInput(splits, structure));
             }
             scanner.close();

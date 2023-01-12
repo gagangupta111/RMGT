@@ -15,21 +15,21 @@ public class BusinessLogic {
         try {
             String key = vehicleBookingRequest.isRegularORVIP() ? Utility.regularVehicleKey(vehicleBookingRequest.getVehicle_type())
                     : Utility.vipVehicleKey(vehicleBookingRequest.getVehicle_type());
-            if (structure.allTimeSlots.get(key) == null){
-                structure.allTimeSlots.put(key, new ArrayList<>());
+            if (structure.getAllTimeSlots().get(key) == null){
+                structure.getAllTimeSlots().put(key, new ArrayList<>());
             }
-            structure.allTimeSlots.get(key).add(vehicleBookingRequest.getRequestedBookingSlot());
+            structure.getAllTimeSlots().get(key).add(vehicleBookingRequest.getRequestedBookingSlot());
 
-            structure.vehicles_slot_map.put(vehicleBookingRequest.getVehicle_id(), vehicleBookingRequest.getRequestedBookingSlot());
-            structure.vehicles_id_type_map.put(vehicleBookingRequest.getVehicle_id(), vehicleBookingRequest.getVehicle_type());
+            structure.getVehicles_slot_map().put(vehicleBookingRequest.getVehicle_id(), vehicleBookingRequest.getRequestedBookingSlot());
+            structure.getVehicles_id_type_map().put(vehicleBookingRequest.getVehicle_id(), vehicleBookingRequest.getVehicle_type());
             structure.initializeRevenues();
 
             int changeCost = Constants.costOfVehiclesTypesPerHour.get(key)*Constants.durationOfBooking;
 
             if (vehicleBookingRequest.isRegularORVIP()) {
-                structure.revenues.put(Constants.REGULAR, structure.revenues.get(Constants.REGULAR) + changeCost);
+                structure.getRevenues().put(Constants.REGULAR, structure.getRevenues().get(Constants.REGULAR) + changeCost);
             } else {
-                structure.revenues.put(Constants.VIP, structure.revenues.get(Constants.VIP) + changeCost);
+                structure.getRevenues().put(Constants.VIP, structure.getRevenues().get(Constants.VIP) + changeCost);
             }
 
         }catch (Exception exception){
@@ -46,12 +46,12 @@ public class BusinessLogic {
             int minDifference = Utility.timeDifferenceInMinutes(vehicleBookingRequest.getRequestedBookingSlot());
             String key = vehicleBookingRequest.isRegularORVIP() ? Utility.regularVehicleKey(vehicleBookingRequest.getVehicle_type())
                     : Utility.vipVehicleKey(vehicleBookingRequest.getVehicle_type());
-            if (structure.allTimeSlots.get(key) == null){
-                structure.allTimeSlots.put(key, new ArrayList<>());
+            if (structure.getAllTimeSlots().get(key) == null){
+                structure.getAllTimeSlots().put(key, new ArrayList<>());
             }
 
-            structure.allTimeSlots.get(key).add(vehicleBookingRequest.getRequestedBookingSlot());
-            structure.vehicles_slot_map.put(vehicleBookingRequest.getVehicle_id(),
+            structure.getAllTimeSlots().get(key).add(vehicleBookingRequest.getRequestedBookingSlot());
+            structure.getVehicles_slot_map().put(vehicleBookingRequest.getVehicle_id(),
                     new TimeSlot(vehicleBookingRequest.getPreviousBookedSlot().getFromString(), vehicleBookingRequest.getRequestedBookingSlot().getToString()));
 
             structure.initializeRevenues();
@@ -67,9 +67,9 @@ public class BusinessLogic {
             }
 
             if (vehicleBookingRequest.isRegularORVIP()) {
-                structure.revenues.put(Constants.REGULAR, structure.revenues.get(Constants.REGULAR) + changeCost);
+                structure.getRevenues().put(Constants.REGULAR, structure.getRevenues().get(Constants.REGULAR) + changeCost);
             } else {
-                structure.revenues.put(Constants.VIP, structure.revenues.get(Constants.VIP) + changeCost);
+                structure.getRevenues().put(Constants.VIP, structure.getRevenues().get(Constants.VIP) + changeCost);
             }
 
         }catch (Exception exception){
@@ -81,7 +81,7 @@ public class BusinessLogic {
 
     public static String printRevenue(Structure structure){
 
-        return structure.revenues.get(Constants.REGULAR) + " " + structure.revenues.get(Constants.VIP);
+        return structure.getRevenues().get(Constants.REGULAR) + Constants.SPACE + structure.getRevenues().get(Constants.VIP);
     }
 
 

@@ -56,7 +56,7 @@ public class ValidationsTest {
         List<TimeSlot> timeSlots = new ArrayList<>();
         timeSlots.add(new TimeSlot("13:00", "16:00"));
 
-        structure.allTimeSlots.put("SUV_R", timeSlots);
+        structure.getAllTimeSlots().put("SUV_R", timeSlots);
         TimeSlot timeSlot = new TimeSlot("13:40", "16:40");
         VehicleBookingRequest vehicleBookingRequest = new VehicleBookingRequest("abc", "SUV", "", "", null, timeSlot, true);
         assert Validations.validateBookingAvailability(structure, vehicleBookingRequest);
@@ -69,7 +69,7 @@ public class ValidationsTest {
         List<TimeSlot> timeSlots = new ArrayList<>();
         timeSlots.add(new TimeSlot("13:00", "16:00"));
 
-        structure.allTimeSlots.put("SUV_V", timeSlots);
+        structure.getAllTimeSlots().put("SUV_V", timeSlots);
         TimeSlot timeSlot = new TimeSlot("13:40", "16:40");
         VehicleBookingRequest vehicleBookingRequest = new VehicleBookingRequest("abc", "SUV", "", "", null, timeSlot, false);
         assert !Validations.validateBookingAvailability(structure, vehicleBookingRequest);
@@ -83,7 +83,7 @@ public class ValidationsTest {
         timeSlots.add(new TimeSlot("13:00", "16:00"));
         timeSlots.add(new TimeSlot("13:05", "16:05"));
 
-        structure.allTimeSlots.put("SUV_R", timeSlots);
+        structure.getAllTimeSlots().put("SUV_R", timeSlots);
         TimeSlot timeSlot = new TimeSlot("13:40", "16:40");
         VehicleBookingRequest vehicleBookingRequest = new VehicleBookingRequest("abc", "SUV", "", "", null, timeSlot, true);
         assert !Validations.validateBookingAvailability(structure, vehicleBookingRequest);

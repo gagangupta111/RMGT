@@ -9,14 +9,37 @@ import java.util.Map;
 public class Structure {
 
     // revenues for R and VIP
-    public Map<String, Integer> revenues = new HashMap<>();
+    private Map<String, Integer> revenues;
     // all time slots lists for all vehicles types, R and VIP
-    public Map<String, List<TimeSlot>> allTimeSlots = new HashMap<>();
+    private Map<String, List<TimeSlot>> allTimeSlots;
     // vehicle id to vehicle type
-    public Map<String, String> vehicles_id_type_map = new HashMap<>();
+    private Map<String, String> vehicles_id_type_map;
     // vehicle id to slot booked
-    public Map<String, TimeSlot> vehicles_slot_map = new HashMap<>();
+    private Map<String, TimeSlot> vehicles_slot_map;
     public Structure() {
+        revenues = new HashMap<>();
+        // all time slots lists for all vehicles types, R and VIP
+        allTimeSlots = new HashMap<>();
+        // vehicle id to vehicle type
+        vehicles_id_type_map = new HashMap<>();
+        // vehicle id to slot booked
+        vehicles_slot_map = new HashMap<>();
+    }
+
+    public Map<String, Integer> getRevenues() {
+        return revenues;
+    }
+
+    public Map<String, List<TimeSlot>> getAllTimeSlots() {
+        return allTimeSlots;
+    }
+
+    public Map<String, String> getVehicles_id_type_map() {
+        return vehicles_id_type_map;
+    }
+
+    public Map<String, TimeSlot> getVehicles_slot_map() {
+        return vehicles_slot_map;
     }
 
     public void initializeRevenues(){

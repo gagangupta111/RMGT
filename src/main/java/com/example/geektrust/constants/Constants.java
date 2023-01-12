@@ -15,7 +15,6 @@ public class Constants {
         limitOfVehiclesAllowed.put("CAR_V", 1);
         limitOfVehiclesAllowed.put("SUV_R", 2);
         limitOfVehiclesAllowed.put("SUV_V", 1);
-        limitOfVehiclesAllowed.put("BIKE_R", 4);
     }
 
     static {
@@ -56,7 +55,13 @@ public class Constants {
     public static final Integer minutesInHour = 60;
     public static final Integer ZERO = 0;
     public static final Integer ONE = 1;
+
+    public static final String ZERO_STRING = "0";
+    public static final String ONE_STRING = "1";
     public static final String COLON = ":";
+    public static final String EMPTY = "";
+    public static final String SPACE = " ";
+    public static final String UNDERSCORE = "_";
     public static final String R = "R";
     public static final String V = "V";
 }
