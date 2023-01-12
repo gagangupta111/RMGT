@@ -1,25 +1,28 @@
 package com.example.geektrust.controller;
 
 import com.example.geektrust.constants.Constants;
-import com.example.geektrust.structure.Structure;
-import com.example.geektrust.structure.TimeSlot;
+import com.example.geektrust.model.Structure;
+import com.example.geektrust.model.TimeSlot;
+import com.example.geektrust.model.VehicleBookingRequest;
 import com.example.geektrust.utility.Utility;
 
 public class BookingController {
 
-    // todo : write single if and return result if met condition one by one
     public static String bookNormalSlots(Structure structure, String vehicle_id, String vehicle_type, String entry_time){
 
-        TimeSlot timeSlot = new TimeSlot(entry_time, Utility.timeStringToMinutes(entry_time, Constants.durationOfBooking));
-        if (!Validations.validateNormalBookingEntryTime(structure, vehicle_id, vehicle_type, timeSlot)){
+        TimeSlot timeSlot = new TimeSlot(entry_time, Utility.timeStringAddDuration(entry_time, Constants.durationOfBooking));
+        VehicleBookingRequest vehicleBookingRequest = new VehicleBookingRequest(vehicle_id, vehicle_type, entry_time, "", null, timeSlot, true);
+
+        if (!Validations.validateBookingEntryTime(structure, vehicleBookingRequest)){
             return Constants.INVALID_ENTRY_TIME;
         }
 
-        if (Validations.validateNormalBookingAvailability(structure, vehicle_id, vehicle_type, true, timeSlot)){
-            return BusinessLogic.bookNormalSlots(structure, vehicle_id, vehicle_type,true, timeSlot);
+        if (Validations.validateBookingAvailability(structure, vehicleBookingRequest)){
+            return BusinessLogic.bookNormalSlots(structure, vehicleBookingRequest);
         }else {
-            if (Validations.validateNormalBookingAvailability(structure, vehicle_id, vehicle_type, false, timeSlot)){
-                return BusinessLogic.bookNormalSlots(structure, vehicle_id, vehicle_type,false, timeSlot);
+            vehicleBookingRequest.setRegularORVIP(false);
+            if (!Constants.BIKE.equals(vehicle_type) && Validations.validateBookingAvailability(structure, vehicleBookingRequest)){
+                return BusinessLogic.bookNormalSlots(structure, vehicleBookingRequest);
             }else {
                 return Constants.RACETRACK_FULL;
             }
@@ -28,22 +31,27 @@ public class BookingController {
 
     public static String bookAdditionalSlots(Structure structure, String vehicle_id, String exit_time){
 
-        TimeSlot timeSlot = new TimeSlot("", exit_time);
-        String vehicle_type = structure.vehicles_id_map.get(vehicle_id);
-        TimeSlot slot = structure.vehicles_slot_map.get(vehicle_id);
+        TimeSlot requestedTimeSlot = new TimeSlot("", exit_time);
+        String vehicle_type = structure.vehicles_id_type_map.get(vehicle_id);
+        TimeSlot previousBookingSlot = structure.vehicles_slot_map.get(vehicle_id);
 
-        if (Validations.validateAdditionalBookingEntryTime(structure, vehicle_id, vehicle_type, timeSlot)){
-            if (Validations.validateAdditionalBookingExitTime(structure, vehicle_id, vehicle_type, timeSlot)){
-                if (Validations.validateAdditionalBookingAvailability(structure, vehicle_id, vehicle_type, timeSlot)){
-                    return BusinessLogic.bookAdditionalSlots(structure, vehicle_id, vehicle_type, slot.getFromString(), exit_time);
-                }else {
-                    return Constants.RACETRACK_FULL;
-                }
-            }else {
-                return Constants.INVALID_EXIT_TIME;
-            }
+        String newEntryTime = Utility.timeStringAddMinute(previousBookingSlot.getToString(), 1);
+        requestedTimeSlot = new TimeSlot(newEntryTime, requestedTimeSlot.getToString());
+        VehicleBookingRequest vehicleBookingRequest = new VehicleBookingRequest(vehicle_id, vehicle_type, "", exit_time, previousBookingSlot, requestedTimeSlot, true);
+
+        if (!Validations.validateAdditionalBookingExitTime(structure, vehicleBookingRequest)){
+            return Constants.INVALID_EXIT_TIME;
+        }
+
+        if (Validations.validateBookingAvailability(structure, vehicleBookingRequest)){
+            return BusinessLogic.bookAdditionalSlots(structure, vehicleBookingRequest);
         }else {
-            return Constants.INVALID_ENTRY_TIME;
+            vehicleBookingRequest.setRegularORVIP(false);
+            if (!Constants.BIKE.equals(vehicle_type) && Validations.validateBookingAvailability(structure, vehicleBookingRequest)){
+                return BusinessLogic.bookAdditionalSlots(structure, vehicleBookingRequest);
+            }else {
+                return Constants.RACETRACK_FULL;
+            }
         }
     }
 

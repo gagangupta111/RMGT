@@ -2,8 +2,9 @@ package com.example.geektrust;
 
 import com.example.geektrust.constants.Constants;
 import com.example.geektrust.controller.BusinessLogic;
-import com.example.geektrust.structure.Structure;
-import com.example.geektrust.structure.TimeSlot;
+import com.example.geektrust.model.Structure;
+import com.example.geektrust.model.TimeSlot;
+import com.example.geektrust.model.VehicleBookingRequest;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -19,18 +20,68 @@ public class BusinessLogicTest {
         List<TimeSlot> timeSlots = new ArrayList<>();
         timeSlots.add(new TimeSlot("13:00", "16:00"));
         timeSlots.add(new TimeSlot("13:05", "16:05"));
-        structure.timeSlots.put("SUV_R", timeSlots);
-        structure.timeSlots.put("SUV_V", timeSlots);
+        structure.allTimeSlots.put("SUV_R", timeSlots);
+        structure.allTimeSlots.put("SUV_V", timeSlots);
 
         TimeSlot timeSlot = new TimeSlot("13:40", "16:40");
-
-        String returnValue = BusinessLogic.bookNormalSlots(structure, "abc", "SUV", true, timeSlot);
+        VehicleBookingRequest vehicleBookingRequest = new VehicleBookingRequest("abc", "SUV", "", "", null, timeSlot, true);
+        String returnValue = BusinessLogic.bookNormalSlots(structure, vehicleBookingRequest);
 
         assert returnValue.equals(Constants.SUCCESS);
-        assert structure.timeSlots.get("SUV_R").size() == 3;
+        assert structure.allTimeSlots.get("SUV_R").size() == 3;
         assert structure.revenues.get(Constants.REGULAR) == Constants.costOfVehiclesTypesPerHour.get("SUV_R")*Constants.durationOfBooking;
         assert structure.vehicles_slot_map.get("abc").getFromString().equals(timeSlot.getFromString());
-        assert structure.vehicles_id_map.get("abc").equals(Constants.SUV);
+        assert structure.vehicles_id_type_map.get("abc").equals(Constants.SUV);
+    }
+
+    @Test
+    public void bookAdditionalSlots_return_SUCCESS_ZERO_COST(){
+
+        Structure structure = new Structure();
+        structure.vehicles_id_type_map.put("abc", Constants.SUV);
+
+        List<TimeSlot> timeSlots = new ArrayList<>();
+        timeSlots.add(new TimeSlot("13:00", "16:00"));
+        timeSlots.add(new TimeSlot("13:05", "16:05"));
+        structure.allTimeSlots.put("SUV_R", timeSlots);
+        structure.allTimeSlots.put("SUV_V", timeSlots);
+
+        TimeSlot previousBookedTimeSlot = new TimeSlot("13:00", "16:00");
+        TimeSlot requestedTimeSlot = new TimeSlot("16:01", "16:15");
+        VehicleBookingRequest vehicleBookingRequest = new VehicleBookingRequest("abc", "SUV", "", "", previousBookedTimeSlot, requestedTimeSlot, true);
+        String returnValue = BusinessLogic.bookAdditionalSlots(structure, vehicleBookingRequest);
+
+        assert returnValue.equals(Constants.SUCCESS);
+        assert structure.allTimeSlots.get("SUV_R").size() == 3;
+        assert structure.revenues.get(Constants.REGULAR) == 0;
+        assert structure.vehicles_slot_map.get("abc").getFromString().equals(previousBookedTimeSlot.getFromString());
+        assert structure.vehicles_slot_map.get("abc").getToString().equals(requestedTimeSlot.getToString());
+
+    }
+
+    @Test
+    public void bookAdditionalSlots_return_SUCCESS_MORE_COST(){
+
+        Structure structure = new Structure();
+        structure.vehicles_id_type_map.put("abc", Constants.SUV);
+
+        List<TimeSlot> timeSlots = new ArrayList<>();
+        timeSlots.add(new TimeSlot("13:00", "16:00"));
+        timeSlots.add(new TimeSlot("13:05", "16:05"));
+        structure.allTimeSlots.put("SUV_R", timeSlots);
+        structure.allTimeSlots.put("SUV_V", timeSlots);
+
+        TimeSlot previousBookedTimeSlot = new TimeSlot("13:00", "16:00");
+        TimeSlot requestedTimeSlot = new TimeSlot("16:01", "17:15");
+        VehicleBookingRequest vehicleBookingRequest = new VehicleBookingRequest("abc", "SUV", "", "", previousBookedTimeSlot, requestedTimeSlot, true);
+        String returnValue = BusinessLogic.bookAdditionalSlots(structure, vehicleBookingRequest);
+
+        assert returnValue.equals(Constants.SUCCESS);
+        assert structure.allTimeSlots.get("SUV_R").size() == 3;
+        assert structure.revenues.get(Constants.REGULAR) == 100;
+        assert structure.vehicles_slot_map.get("abc").getFromString().equals(previousBookedTimeSlot.getFromString());
+        assert structure.vehicles_slot_map.get("abc").getToString().equals(requestedTimeSlot.getToString());
+
     }
 
 }

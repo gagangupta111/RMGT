@@ -1,9 +1,7 @@
 package com.example.geektrust;
 
-import com.example.geektrust.constants.Constants;
-import com.example.geektrust.controller.BookingController;
 import com.example.geektrust.inputOutput.InputOutput;
-import com.example.geektrust.structure.Structure;
+import com.example.geektrust.model.Structure;
 
 import java.io.FileInputStream;
 import java.util.Scanner;

@@ -1,4 +1,6 @@
-package com.example.geektrust.structure;
+package com.example.geektrust.model;
+
+import com.example.geektrust.constants.Constants;
 
 public class TimeSlot {
 
@@ -13,18 +15,18 @@ public class TimeSlot {
         this.to = to;
 
         if (from != null && !"".equals(from)){
-            String[] hourMin = from.split(":");
+            String[] hourMin = from.split(Constants.COLON);
             int hour = Integer.parseInt(hourMin[0]);
             int mins = Integer.parseInt(hourMin[1]);
-            int hoursInMins = hour * 60;
+            int hoursInMins = hour * Constants.minutesInHour;
             fromInt = hoursInMins + mins;
         }
 
         if (to != null && !"".equals(to)){
-            String[] hourMin = to.split(":");
+            String[] hourMin = to.split(Constants.COLON);
             int hour = Integer.parseInt(hourMin[0]);
             int mins = Integer.parseInt(hourMin[1]);
-            int hoursInMins = hour * 60;
+            int hoursInMins = hour * Constants.minutesInHour;
             toInt = hoursInMins + mins;
         }
 

@@ -51,4 +51,12 @@ public class Constants {
     public static final Integer EXIT_TIME_END_INTEGER = 1200;
 
     public static final Integer durationOfBooking = 3;
+    public static final Integer freeDurationMinutes = 15;
+    public static final Integer extraHourChargesPerHour = 50;
+    public static final Integer minutesInHour = 60;
+    public static final Integer ZERO = 0;
+    public static final Integer ONE = 1;
+    public static final String COLON = ":";
+    public static final String R = "R";
+    public static final String V = "V";
 }

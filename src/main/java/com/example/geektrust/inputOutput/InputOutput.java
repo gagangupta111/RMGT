@@ -2,7 +2,7 @@ package com.example.geektrust.inputOutput;
 
 import com.example.geektrust.constants.Constants;
 import com.example.geektrust.controller.BookingController;
-import com.example.geektrust.structure.Structure;
+import com.example.geektrust.model.Structure;
 
 public class InputOutput {
 
