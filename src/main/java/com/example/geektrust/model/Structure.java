@@ -2,6 +2,7 @@ package com.example.geektrust.model;
 
 import com.example.geektrust.constants.Constants;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,5 +51,36 @@ public class Structure {
             revenues.put(Constants.VIP, Constants.ZERO);
         }
     }
+
+    public void initializeAllTimeSlots(String key){
+        if (allTimeSlots.get(key) == null){
+            allTimeSlots.put(key, new ArrayList<>());
+        }
+    }
+
+    public void updateRevenues(VehicleBookingRequest vehicleBookingRequest, int changeCost){
+        if (vehicleBookingRequest.isRegularORVIP()) {
+            revenues.put(Constants.REGULAR, revenues.get(Constants.REGULAR) + changeCost);
+        } else {
+            revenues.put(Constants.VIP, revenues.get(Constants.VIP) + changeCost);
+        }
+    }
+
+    public void updateStructureNormalBookings(VehicleBookingRequest vehicleBookingRequest, String key){
+        initializeAllTimeSlots(key);
+        allTimeSlots.get(key).add(vehicleBookingRequest.getRequestedBookingSlot());
+        vehicles_slot_map.put(vehicleBookingRequest.getVehicle_id(), vehicleBookingRequest.getRequestedBookingSlot());
+        vehicles_id_type_map.put(vehicleBookingRequest.getVehicle_id(), vehicleBookingRequest.getVehicle_type());
+    }
+
+    public void updateStructureAdditionalBookings(VehicleBookingRequest vehicleBookingRequest, String key){
+        initializeAllTimeSlots(key);
+        allTimeSlots.get(key).add(vehicleBookingRequest.getRequestedBookingSlot());
+        vehicles_slot_map.put(vehicleBookingRequest.getVehicle_id(),
+                new TimeSlot(vehicleBookingRequest.getPreviousBookedSlot().getFromString(), vehicleBookingRequest.getRequestedBookingSlot().getToString()));
+
+    }
+
+
 
 }

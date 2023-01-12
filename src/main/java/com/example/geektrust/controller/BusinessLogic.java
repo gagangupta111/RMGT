@@ -2,11 +2,8 @@ package com.example.geektrust.controller;
 
 import com.example.geektrust.constants.Constants;
 import com.example.geektrust.model.Structure;
-import com.example.geektrust.model.TimeSlot;
 import com.example.geektrust.model.VehicleBookingRequest;
 import com.example.geektrust.utility.Utility;
-
-import java.util.ArrayList;
 
 public class BusinessLogic {
 
@@ -15,23 +12,10 @@ public class BusinessLogic {
         try {
             String key = vehicleBookingRequest.isRegularORVIP() ? Utility.regularVehicleKey(vehicleBookingRequest.getVehicle_type())
                     : Utility.vipVehicleKey(vehicleBookingRequest.getVehicle_type());
-            if (structure.getAllTimeSlots().get(key) == null){
-                structure.getAllTimeSlots().put(key, new ArrayList<>());
-            }
-            structure.getAllTimeSlots().get(key).add(vehicleBookingRequest.getRequestedBookingSlot());
-
-            structure.getVehicles_slot_map().put(vehicleBookingRequest.getVehicle_id(), vehicleBookingRequest.getRequestedBookingSlot());
-            structure.getVehicles_id_type_map().put(vehicleBookingRequest.getVehicle_id(), vehicleBookingRequest.getVehicle_type());
+            structure.updateStructureNormalBookings(vehicleBookingRequest, key);
             structure.initializeRevenues();
-
             int changeCost = Constants.costOfVehiclesTypesPerHour.get(key)*Constants.durationOfBooking;
-
-            if (vehicleBookingRequest.isRegularORVIP()) {
-                structure.getRevenues().put(Constants.REGULAR, structure.getRevenues().get(Constants.REGULAR) + changeCost);
-            } else {
-                structure.getRevenues().put(Constants.VIP, structure.getRevenues().get(Constants.VIP) + changeCost);
-            }
-
+            structure.updateRevenues(vehicleBookingRequest, changeCost);
         }catch (Exception exception){
             return Constants.FAILURE;
         }
@@ -46,14 +30,7 @@ public class BusinessLogic {
             int minDifference = Utility.timeDifferenceInMinutes(vehicleBookingRequest.getRequestedBookingSlot());
             String key = vehicleBookingRequest.isRegularORVIP() ? Utility.regularVehicleKey(vehicleBookingRequest.getVehicle_type())
                     : Utility.vipVehicleKey(vehicleBookingRequest.getVehicle_type());
-            if (structure.getAllTimeSlots().get(key) == null){
-                structure.getAllTimeSlots().put(key, new ArrayList<>());
-            }
-
-            structure.getAllTimeSlots().get(key).add(vehicleBookingRequest.getRequestedBookingSlot());
-            structure.getVehicles_slot_map().put(vehicleBookingRequest.getVehicle_id(),
-                    new TimeSlot(vehicleBookingRequest.getPreviousBookedSlot().getFromString(), vehicleBookingRequest.getRequestedBookingSlot().getToString()));
-
+            structure.updateStructureAdditionalBookings(vehicleBookingRequest, key);
             structure.initializeRevenues();
             int hoursDifference = minDifference/Constants.minutesInHour;
             minDifference = minDifference - (hoursDifference*Constants.minutesInHour);
@@ -65,13 +42,7 @@ public class BusinessLogic {
                 changeCost += hoursDifference*Constants.extraHourChargesPerHour;
                 changeCost += minDifference == Constants.ZERO ? Constants.ZERO : Constants.extraHourChargesPerHour;
             }
-
-            if (vehicleBookingRequest.isRegularORVIP()) {
-                structure.getRevenues().put(Constants.REGULAR, structure.getRevenues().get(Constants.REGULAR) + changeCost);
-            } else {
-                structure.getRevenues().put(Constants.VIP, structure.getRevenues().get(Constants.VIP) + changeCost);
-            }
-
+            structure.updateRevenues(vehicleBookingRequest, changeCost);
         }catch (Exception exception){
             return Constants.FAILURE;
         }

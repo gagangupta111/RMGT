@@ -26,9 +26,11 @@ public class Validations {
         List<TimeSlot> timeSlots = structure.getAllTimeSlots().get(key) == null ? new ArrayList<>() : structure.getAllTimeSlots().get(key);
 
         for (TimeSlot timeSlot : timeSlots){
-            if ((vehicleBookingRequest.getRequestedBookingSlot().getFromInteger() >= timeSlot.getFromInteger()
-                    && vehicleBookingRequest.getRequestedBookingSlot().getFromInteger() < timeSlot.getToInteger())
-            || (vehicleBookingRequest.getRequestedBookingSlot().getToInteger() > timeSlot.getFromInteger() && vehicleBookingRequest.getRequestedBookingSlot().getToInteger() <= timeSlot.getToInteger())){
+            boolean firstOverlap = vehicleBookingRequest.getRequestedBookingSlot().getFromInteger() >= timeSlot.getFromInteger()
+                    && vehicleBookingRequest.getRequestedBookingSlot().getFromInteger() < timeSlot.getToInteger();
+            boolean secondOverlap = vehicleBookingRequest.getRequestedBookingSlot().getToInteger() > timeSlot.getFromInteger()
+                    && vehicleBookingRequest.getRequestedBookingSlot().getToInteger() <= timeSlot.getToInteger();
+            if ( firstOverlap || secondOverlap){
                 bookingsConflicts++;
             }
 
